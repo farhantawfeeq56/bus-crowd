@@ -83,9 +83,9 @@ const ROUTES: RouteSpec[] = [
  * — the first stop all three routes have in common — within the same minute.
  */
 const BUSES = [
-  { code: '256', route: 0, capacity: 50, progress: 0.30, onboard: 36 },
-  { code: '257', route: 1, capacity: 50, progress: 0.22, onboard: 31 },
-  { code: '255', route: 2, capacity: 50, progress: 0.16, onboard: 18 },
+  { code: '5c', route: 0, capacity: 50, progress: 0.30, onboard: 36 },
+  { code: '18K', route: 1, capacity: 50, progress: 0.22, onboard: 31 },
+  { code: '26', route: 2, capacity: 50, progress: 0.16, onboard: 18 },
 ];
 
 // One end-to-end run is 30 sim-minutes; at SIM_SPEED=15 that is 2 real minutes.

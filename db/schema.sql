@@ -37,7 +37,7 @@ CREATE INDEX ON stops (stop_key);
 CREATE TABLE buses (
   id        SERIAL PRIMARY KEY,
   route_id  INT REFERENCES routes(id) ON DELETE CASCADE,
-  code      TEXT UNIQUE NOT NULL,      -- '256','257','255'
+  code      TEXT UNIQUE NOT NULL,      -- '5c','18K','26'
   capacity  INT NOT NULL DEFAULT 50
 );
 

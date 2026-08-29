@@ -3,7 +3,7 @@ import Link from 'next/link';
 const SCREENS = [
   { href: '/dashboard', kicker: 'Judge screen', name: 'Control dashboard',
     blurb: 'Live map, occupancy bars, directive feed.' },
-  { href: '/conductor?bus=257', kicker: 'On the bus', name: 'Conductor · 257',
+  { href: '/conductor?bus=18K', kicker: 'On the bus', name: 'Conductor · 18K',
     blurb: 'Issue tickets, accept transfer directives.' },
   { href: '/passenger', kicker: 'In the hand', name: 'Passenger app',
     blurb: 'Buy, ride, get moved, auto-complete.' },

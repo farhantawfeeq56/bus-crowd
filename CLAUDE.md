@@ -35,8 +35,8 @@ npm run sim     # bus movement engine        (separate terminal)
 npm run god     # auto-demo passenger spawner (separate terminal)
 ```
 
-Screens: `/dashboard` (judge-facing), `/conductor?bus=257`, `/passenger`.
-Bus 256 runs Royapettah, 257 runs Teynampet, 255 runs Gemini.
+Screens: `/dashboard` (judge-facing), `/conductor?bus=18K`, `/passenger`.
+Bus 5c runs Royapettah, 18K runs Teynampet, 26 runs Gemini.
 `npm run seed` alone re-seeds without dropping the schema.
 `npm run typecheck` and `npm run lint` both pass — keep them that way.
 
@@ -62,9 +62,9 @@ scripts/*.mts            reset, seed, sim, godmode
 
 | Route | Bus | Stops | Colour |
 |---|---|---|---|
-| Royapettah → Broadway | 256 | 8 | blue |
-| Teynampet → Broadway | 257 | 9 | purple |
-| Gemini → Broadway | 255 | 11 | orange |
+| Royapettah → Broadway | 5c | 8 | blue |
+| Teynampet → Broadway | 18K | 9 | purple |
+| Gemini → Broadway | 26 | 11 | orange |
 
 Served by all three: **L.I.C., P. Orr & Sons, Pallavan Salai, M.G.R. Central,
 Broadway**. Served by two: Thousand Lights, Shanthi Theatre, Evening Bazaar.
@@ -159,21 +159,21 @@ will wait at a transfer stop; raise it if you want more time to talk on stage.
 | `DIRECTIVE_WINDOW_MIN` | 10 | rule 5 |
 | `GOD_INTENSITY` | 1 | scales god-mode boarding volume |
 
-Buses seed at 256 = 36/50 (72%), 257 = 31/50 (62%), 255 = 18/50 (36%). Thousand
-Lights expects 16 boarders, which is what tips 257 (Teynampet) past the threshold
-and pulls in 255 (Gemini) as relief — a cross-route rescue in the first minute.
+Buses seed at 5c = 36/50 (72%), 18K = 31/50 (62%), 26 = 18/50 (36%). Thousand
+Lights expects 16 boarders, which is what tips 18K (Teynampet) past the threshold
+and pulls in 26 (Gemini) as relief — a cross-route rescue in the first minute.
 
 ## Demo beat
 
-1. Boarders push **257** past 85% approaching Thousand Lights → a directive
+1. Boarders push **18K** past 85% approaching Thousand Lights → a directive
    appears in the dashboard feed, naming the meeting stop.
-2. **257 stops and waits.** 255 — a *different route* — pulls in behind it. Both
+2. **18K stops and waits.** 26 — a *different route* — pulls in behind it. Both
    markers snap together, the dashed link lights up, the feed flips to
    `● BOTH AT KERB`.
-3. Conductor **255** sees `🔴 ACCEPT FROM 257` — tap `+5`.
-4. 257 drops, 255 rises, markers recolour, bars animate — every screen at once.
-5. The transferred rider's app still reads **dest Broadway**, now on bus 255,
-   with a `boarded on 257` pill. Their route changed; their ticket did not.
+3. Conductor **26** sees `🔴 ACCEPT FROM 18K` — tap `+5`.
+4. 18K drops, 26 rises, markers recolour, bars animate — every screen at once.
+5. The transferred rider's app still reads **dest Broadway**, now on bus 26,
+   with a `boarded on 18K` pill. Their route changed; their ticket did not.
 6. Tap `DONE`; both buses pull away. At Broadway the tickets complete.
 
 ## Opening it on a phone (LAN)

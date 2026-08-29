@@ -19,7 +19,7 @@ export default function ConductorPage() {
 /** The phone in the conductor's hand: live count, issue flow, accept banner. */
 function Conductor() {
   const router = useRouter();
-  const code = useSearchParams().get('bus') ?? '257';
+  const code = useSearchParams().get('bus') ?? '18K';
 
   const [base, setBase] = useState<FullState | null>(null); // stops + fleet, effectively static
   const [view, setView] = useState<BusView | null>(null);   // this bus, refreshed every tick

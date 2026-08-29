@@ -77,7 +77,7 @@ export default function DashboardPage() {
     <div className="flex h-dvh flex-col overflow-hidden">
       <TopBar tag={`${state.routes.length} routes → Broadway`} live={live}>
         <Tag>{clock || '—'}</Tag>
-        <Tag href="/conductor?bus=257">conductor →</Tag>
+        <Tag href="/conductor?bus=18K">conductor →</Tag>
         <Tag href="/passenger">passenger →</Tag>
       </TopBar>
 
