@@ -9,15 +9,15 @@ Three Chennai feeder routes converge on Anna Salai and share a trunk into
 Broadway. That overlap is the product: relief can come from a *different route*,
 which is what makes this a mesh rather than a queue.
 
-Hackathon MVP. Everything runs locally: **local Postgres**, no Supabase, no cloud.
+Hackathon MVP. The database runs on **Neon** (serverless Postgres) — no Supabase, no local install.
 
 ## Stack
 
 | Concern | Choice | Why |
 |---|---|---|
 | App | **Next.js 16** (App Router, TypeScript, Tailwind v4) in `src/` | UI + API + realtime in one process |
-| DB | **Local Postgres 16** (`postgresql://localhost:5432/busmesh`) | No cloud dependency on stage |
-| Realtime | Postgres `LISTEN/NOTIFY` → SSE at `GET /api/stream` | Replaces Supabase Realtime; every screen repaints on the same tick |
+| DB | **Neon** (serverless Postgres 16), pool via `@neondatabase/serverless` over WSS | No local install; created once with `npx neon@latest init` |
+| Realtime | Postgres `LISTEN/NOTIFY` (Neon supports it over the WebSocket endpoint) → SSE at `GET /api/stream` | Replaces Supabase Realtime; every screen repaints on the same tick |
 | Map | MapLibre GL + OpenFreeMap `dark` tiles | Free, unlimited, no signup, no key |
 | Geometry | OSRM public API, fetched **once at seed** per route | Polylines live in the DB — no rate-limit risk mid-demo |
 | Geocoding | Nominatim, run **once during development**, results hardcoded | No lookups at runtime |

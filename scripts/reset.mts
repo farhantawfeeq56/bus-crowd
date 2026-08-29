@@ -1,22 +1,13 @@
 import 'dotenv/config';
 import { readFileSync } from 'node:fs';
-import { Client } from 'pg';
+import { Client } from '@neondatabase/serverless';
 
-// Creates the database if needed, then applies db/schema.sql from scratch.
-const url = process.env.DATABASE_URL ?? 'postgresql://localhost:5432/busmesh';
-const dbName = new URL(url).pathname.slice(1);
-const adminUrl = url.replace(`/${dbName}`, '/postgres');
+// Applies db/schema.sql from scratch. This repo's database lives on Neon:
+// databases are created with the `neon` CLI / console, never CREATE DATABASE.
+const url =
+  process.env.DATABASE_URL ?? (() => { throw new Error('DATABASE_URL is not set — see .env'); })();
 
-const admin = new Client({ connectionString: adminUrl });
-await admin.connect();
-const { rowCount } = await admin.query('SELECT 1 FROM pg_database WHERE datname = $1', [dbName]);
-if (!rowCount) {
-  await admin.query(`CREATE DATABASE ${dbName}`);
-  console.log(`created database ${dbName}`);
-}
-await admin.end();
-
-const client = new Client({ connectionString: url });
+const client = new Client(url);
 await client.connect();
 await client.query(readFileSync(new URL('../db/schema.sql', import.meta.url), 'utf8'));
 await client.end();

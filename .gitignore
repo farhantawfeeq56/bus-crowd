@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local env
 .env
+
+# neon CLI project context (local)
+/.neon

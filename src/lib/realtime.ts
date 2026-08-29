@@ -1,4 +1,4 @@
-import { Client } from 'pg';
+import { Client } from '@neondatabase/serverless';
 import { DB_URL } from './db';
 
 type Send = (payload: string) => void;
