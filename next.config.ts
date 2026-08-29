@@ -5,9 +5,10 @@ const nextConfig: NextConfig = {
   // directory makes Turbopack guess a root above the repo and warn on every boot.
   turbopack: { root: import.meta.dirname },
 
-  // `pg` opens real TCP sockets — it must stay an external Node module and never
-  // be pulled into the bundler's graph.
-  serverExternalPackages: ['pg'],
+  // The Neon serverless driver opens its own WebSocket/fetch connections — it
+  // must stay an external Node module and never be pulled into the bundler's
+  // graph.
+  serverExternalPackages: ['@neondatabase/serverless'],
 
   /*
    * Next's dev server rejects requests for /_next/* assets whose Host is not an

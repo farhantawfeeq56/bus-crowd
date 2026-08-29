@@ -1,5 +1,5 @@
--- BusMesh schema (local Postgres 16)
--- Realtime is Postgres LISTEN/NOTIFY -> SSE (see src/server.js), no Supabase.
+-- BusMesh schema — runs on Neon (Postgres 16).
+-- Realtime is Postgres LISTEN/NOTIFY -> SSE; Neon supports it over the WebSocket endpoint.
 
 DROP TABLE IF EXISTS bus_events, directives, tickets, expected_boarders,
                      bus_positions, buses, stops, routes CASCADE;

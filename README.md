@@ -21,7 +21,7 @@ Three screens, one live simulation:
 
 ## Quick start
 
-Requires Node 20+ and a local Postgres on `localhost:5432`.
+Requires Node 20+ and a Neon project — create one with `npx neon@latest init` (or `projects create`), then put its `DATABASE_URL` in `.env`.
 
 ```bash
 npm install

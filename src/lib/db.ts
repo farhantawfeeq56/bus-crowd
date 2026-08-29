@@ -1,14 +1,17 @@
 import 'dotenv/config';
-import { Pool, type PoolClient } from 'pg';
+import { Pool, type PoolClient } from '@neondatabase/serverless';
 
-export const DB_URL = process.env.DATABASE_URL ?? 'postgresql://localhost:5432/busmesh';
+// The database is Neon. There is no local fallback: if DATABASE_URL is missing
+// the app fails loudly instead of silently reaching for a dead local Postgres.
+export const DB_URL =
+  process.env.DATABASE_URL ?? (() => { throw new Error('DATABASE_URL is not set — see .env'); })();
 
 /**
  * One pool per process. Next re-evaluates modules on hot reload, so the pool is
  * pinned to globalThis — otherwise dev mode leaks a pool on every edit.
  */
 const globalForPg = globalThis as unknown as { __busmeshPool?: Pool };
-export const pool = globalForPg.__busmeshPool ?? new Pool({ connectionString: DB_URL });
+export const pool = globalForPg.__busmeshPool ?? new Pool({ connectionString: DB_URL, max: 5 });
 if (process.env.NODE_ENV !== 'production') globalForPg.__busmeshPool = pool;
 
 /**
