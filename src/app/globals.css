@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+/*
+  BusMesh is a transit control room: one dark palette, occupancy-coded accents.
+  Tailwind v4 takes design tokens from @theme, so `bg-panel` / `text-crit` etc.
+  are real utilities rather than arbitrary values scattered through the markup.
+*/
+@theme {
+  --color-ground: #0a0e14;
+  --color-panel: #111823;
+  --color-panel-2: #161f2d;
+  --color-line: #22304a;
+  --color-ink: #e8eef7;
+  --color-ink-2: #93a4bd;
+  --color-ink-3: #5d708c;
+
+  /* Occupancy bands: under 60% / 60–85% / over 85%. */
+  --color-ok: #2fd48a;
+  --color-warn: #f5b544;
+  --color-crit: #ff4d5e;
+  --color-accent: #4da3ff;
+
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+
+  --animate-pulse-ring: pulse-ring 2s infinite;
+  --animate-blink: blink 1s steps(2) infinite;
+  --animate-slide-in: slide-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-pop-in: pop-in 0.35s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgb(47 212 138 / 0.6); }
+  70%  { box-shadow: 0 0 0 7px rgb(47 212 138 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(47 212 138 / 0); }
+}
+@keyframes blink { 50% { opacity: 0.25; } }
+@keyframes slide-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: none; } }
+
+html, body { height: 100%; }
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+  Map markers are created imperatively by MapLibre (outside React's tree), so
+  they need real class names rather than Tailwind utilities applied in JSX.
+*/
+.bus-marker {
+  position: relative;
+  width: 36px; height: 36px; border-radius: 11px;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 12px; color: #04070c;
+  /* The outer ring is the route colour, the fill is the occupancy band. */
+  border: 2px solid var(--route-color, rgb(255 255 255 / 0.9));
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.6);
+  transition: background 0.4s, transform 0.35s cubic-bezier(0.2, 1.3, 0.4, 1);
+  cursor: pointer;
+}
+.bus-marker__code { position: relative; z-index: 1; }
+.bus-marker--ok   { background: var(--color-ok); }
+.bus-marker--warn { background: var(--color-warn); }
+.bus-marker--crit { background: var(--color-crit); }
+
+/*
+ * Transfer choreography. A bus with an open directive pulses; once BOTH buses
+ * are standing at the shared stop they scale up and emit a white ring, so the
+ * moment riders actually walk across is the most visible thing on the map.
+ */
+.bus-marker__halo {
+  position: absolute; inset: -3px; border-radius: 13px;
+  pointer-events: none; opacity: 0;
+}
+.bus-marker--pending .bus-marker__halo {
+  opacity: 1;
+  box-shadow: 0 0 0 0 rgb(255 255 255 / 0.55);
+  animation: transfer-ring 1.6s ease-out infinite;
+}
+/*
+ * NOTE: never use `transform` for marker emphasis — MapLibre writes the
+ * positioning transform inline on this same element, and inline wins, so any
+ * transform declared here is silently dead. Emphasise with size/colour instead.
+ */
+.bus-marker--meeting {
+  z-index: 5;
+  border-color: #fff;
+  border-width: 3px;
+  width: 42px; height: 42px;
+  font-size: 13px;
+  box-shadow: 0 6px 22px rgb(0 0 0 / 0.7), 0 0 26px rgb(255 255 255 / 0.35);
+}
+.bus-marker--meeting .bus-marker__halo {
+  opacity: 1;
+  box-shadow: 0 0 0 0 rgb(255 255 255 / 0.9);
+  animation: transfer-ring 1s ease-out infinite;
+}
+@keyframes transfer-ring {
+  0%   { box-shadow: 0 0 0 0 rgb(255 255 255 / 0.75); }
+  70%  { box-shadow: 0 0 0 18px rgb(255 255 255 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(255 255 255 / 0); }
+}
+
+.stop-marker {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--color-ground);
+  border: 2.5px solid var(--color-accent);
+  box-shadow: 0 0 0 3px rgb(10 14 20 / 0.85);
+  flex: none;
+}
+.stop-label {
+  font-family: var(--font-mono); font-size: 10px; color: var(--color-ink-2);
+  white-space: nowrap; margin-left: 7px; text-shadow: 0 1px 4px #000;
+}
+
+/* MapLibre's own chrome, dropped into the dark palette. */
+.maplibregl-ctrl-attrib { background: rgb(10 14 20 / 0.8) !important; font-size: 10px; }
+.maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib a { color: var(--color-ink-2) !important; }
+.maplibregl-popup-content { background: #fff; border-radius: 8px; padding: 8px 10px; }
